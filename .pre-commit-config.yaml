@@ -1,0 +1,45 @@
+default_language_version:
+    python: python3.9.6
+repos:
+-   repo: https://github.com/pycqa/isort
+    rev: 5.8.0
+    hooks:
+    -   id: isort
+        stages: [commit]
+        always_run: true
+        args: [
+            '.'
+        ]
+-   repo: git@github.com:humitos/mirrors-autoflake.git
+    rev: v1.3
+    hooks:
+    -   id: autoflake
+        stages: [commit]
+        args: [
+            '--expand-star-imports',
+            '--ignore-init-module-imports',
+            '--in-place',
+            '--remove-all-unused-imports',
+            '--remove-duplicate-keys',
+            '--remove-unused-variable',
+            '--recursive',
+            '.'
+        ]
+        always_run: true
+-   repo: https://github.com/psf/black
+    rev: 21.8b0
+    hooks:
+    -   id: black
+        always_run: true
+        args: [
+            '.'
+        ]
+-   repo: local
+    hooks:
+    -   id: pytest-check
+        stages: [commit]  
+        name: pytest-check
+        entry: pytest tests --disable-warnings
+        language: system
+        pass_filenames: false
+        always_run: true
