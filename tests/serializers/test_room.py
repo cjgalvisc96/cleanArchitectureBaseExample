@@ -7,7 +7,7 @@ from rentomatic.serializers.room import RoomJsonEncoder
 faker_data = Faker(locale="en_US")  # TODO: constant
 
 
-def test_room_model_int():
+def test_room_model_init():
     expected_code = faker_data.uuid4()
     excepted_size = faker_data.random_number(digits=3)
     excepted_price = faker_data.random_number(digits=3)
