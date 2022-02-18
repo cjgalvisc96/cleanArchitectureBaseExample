@@ -17,6 +17,7 @@ flakehell = "^0.9.0"
 Faker = "^13.0.0"
 Flask = "^2.0.3"
 pytest-flask = "^1.2.0"
+pytest-cov = "^3.0.0"
 
 [tool.isort]
 use_parentheses = true

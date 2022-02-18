@@ -1,0 +1,1 @@
+STATUS_CODES = dict(HTTP_200_OK=200)

@@ -17,3 +17,5 @@ class DevelopmentConfig(config):
 
 class TestingConfig(config):
     """Testing configuration"""
+
+    TESTING = True

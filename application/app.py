@@ -1,5 +1,6 @@
-from application.rest import room
 from flask import Flask
+
+from application.rest import room
 
 
 def create_app(config_name: str) -> Flask:
