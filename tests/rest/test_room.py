@@ -7,8 +7,8 @@ STATUS_CODES = get_status_codes()
 
 
 @mock.patch("application.rest.room.room_list_use_case")
-def test_get_rooms(mock_list_use_case, get_rooms, client):
-    rooms = get_rooms
+def test_get_rooms(mock_list_use_case, get_random_rooms, client):
+    rooms = get_random_rooms
     mock_list_use_case.return_value = rooms
     http_response = client.get("/rooms")
 

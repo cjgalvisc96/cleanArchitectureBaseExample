@@ -7,7 +7,7 @@ faker_data = Faker(locale="en_US")  # TODO: constant
 
 
 @pytest.fixture
-def get_domain_rooms() -> List[Dict[str, Any]]:
+def get_random_domain_rooms() -> List[Dict[str, Any]]:
     random_domain_rooms = []
     for _ in range(5):
         temp_room = dict(
