@@ -1,12 +1,12 @@
 import json
 from unittest import mock
 
-from tests.rest.conftest import get_status_codes
+from tests.api_rest.conftest import get_status_codes
 
 STATUS_CODES = get_status_codes()
 
 
-@mock.patch("application.rest.room.room_list_use_case")
+@mock.patch("application_api.rest.room.room_list_use_case")
 def test_get_rooms(mock_list_use_case, get_random_rooms, client):
     rooms = get_random_rooms
     mock_list_use_case.return_value = rooms

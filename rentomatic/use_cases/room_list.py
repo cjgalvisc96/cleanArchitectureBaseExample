@@ -1,7 +1,8 @@
-from typing import Any, List
+from typing import Any
 
-from rentomatic.domain.room import Room
+from rentomatic.responses import RensponseSuccess
 
 
-def room_list_use_case(*, repo: Any) -> List[Room]:
-    return repo.list()
+def room_list_use_case(*, repo: Any, request: Any) -> RensponseSuccess:
+    rooms = repo.list()
+    return RensponseSuccess(value=rooms)

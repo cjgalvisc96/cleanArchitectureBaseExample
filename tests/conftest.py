@@ -1,6 +1,6 @@
 import pytest
 
-from application.app import create_app
+from application_api.app import create_app
 
 
 @pytest.fixture
