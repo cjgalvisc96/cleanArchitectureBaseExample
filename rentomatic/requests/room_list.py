@@ -28,11 +28,12 @@ class RoomListValidRequest:
 
 
 def build_room_list_request(
+    *,
     filters=None,
 ) -> Union[RoomListValidRequest, RoomListInvalidRequest]:
     if filters is not None:
-        invalid_request = RoomListInvalidRequest()
         error_filter_parameter = "filters"
+        invalid_request = RoomListInvalidRequest()
         if not isinstance(filters, Mapping):
             invalid_request.add_error(
                 parameter=error_filter_parameter,
@@ -41,12 +42,12 @@ def build_room_list_request(
             return invalid_request
 
         accepted_filters = RequestFiltersEnum.get_request_filters()
-        for filter_key, _ in filters.items():
-            if filter_key not in accepted_filters:
+        for filter_name, _ in filters.items():
+            if filter_name not in accepted_filters:
                 invalid_request.add_error(
                     parameter=error_filter_parameter,
-                    message=filters_errors["invalid_filter_key"].format(
-                        filter_key=filter_key
+                    message=filters_errors["invalid_filter_name"].format(
+                        filter_name=filter_name
                     ),
                 )
 
