@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 
 from rentomatic.repository.memrepo import MemRepo
 from rentomatic.responses import (
@@ -9,7 +9,9 @@ from rentomatic.responses import (
 )
 
 
-def room_list_use_case(*, repo: MemRepo, request: Any) -> RensponseSuccess:
+def room_list_use_case(
+    *, repo: MemRepo, request: Any
+) -> Union[RensponseSuccess, ResponseFailure]:
     if not request:
         return build_response_failure_from_invalid_request(
             invalid_request=request

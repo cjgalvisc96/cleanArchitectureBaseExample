@@ -1,11 +1,12 @@
 import json
-from typing import Dict, List
+from typing import Dict, Generator, List
 
 from faker import Faker
-from flask import Blueprint, Response
+from flask import Blueprint, Response, request
 
-from application_api.rest.constants import STATUS_CODES
+from application_api.rest.constants import RESPONSE_STATUS_CODES
 from rentomatic.repository.memrepo import MemRepo
+from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.serializers.room import RoomJsonEncoder
 from rentomatic.use_cases.room_list import room_list_use_case
 
@@ -31,11 +32,26 @@ rooms = build_random_rooms()
 
 
 @blueprint.route("/rooms", methods=["GET"])
-def room_list():
+def room_list() -> Response:
+    query_params = request.args.items()
+    filters = get_filters_from_query_params(query_params=query_params)
+
+    request_object = build_room_list_request(filters=filters)
+
     repo = MemRepo(data=rooms)
-    result = room_list_use_case(repo=repo)
+    response = room_list_use_case(repo=repo, request=request_object)
     return Response(
-        response=json.dumps(obj=result, cls=RoomJsonEncoder),
+        response=json.dumps(obj=response.value, cls=RoomJsonEncoder),
         mimetype="application/json",  # TODO: make env var
-        status=STATUS_CODES["HTTP_200_OK"],
+        status=RESPONSE_STATUS_CODES[response.type],
     )
+
+
+def get_filters_from_query_params(query_params: Generator) -> Dict[str, str]:
+    filters = {}
+    filter_prefix = "filter_"
+    for arg, values in query_params:
+        if arg.startswith(filter_prefix):
+            filters[arg.replace(filter_prefix, "")] = values
+
+    return filters

@@ -51,7 +51,7 @@ def test_room_list_handles_generic_error():
 
 def test_room_list_handles_bad_request():
     repo = mock.Mock()
-    expected_invalid_filter = faker_data.random_number(digits=1)
+    expected_invalid_filter = faker_data.random_digit()
 
     request = build_room_list_request(filters=expected_invalid_filter)
     response = room_list_use_case(repo=repo, request=request)

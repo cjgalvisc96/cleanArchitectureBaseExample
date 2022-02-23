@@ -20,7 +20,7 @@ def test_build_room_list_request_with_empty_filters():
 
 
 def test_build_room_list_request_with_invalid_filters_parameter():
-    invalid_filter = faker_data.random_number(digits=1)
+    invalid_filter = faker_data.random_digit()
     request = build_room_list_request(filters=invalid_filter)
     assert request.has_errors()
     assert request.errors[0]["parameter"] == "filters"
@@ -30,9 +30,7 @@ def test_build_room_list_request_with_invalid_filters_parameter():
 
 def test_build_room_list_request_with_incorrect_filter_names():
     invalid_filter_name = faker_data.random_lowercase_letter()
-    invalid_filter = {
-        f"{invalid_filter_name}": faker_data.random_number(digits=1)
-    }
+    invalid_filter = {f"{invalid_filter_name}": faker_data.random_digit()}
     request = build_room_list_request(filters=invalid_filter)
     assert request.has_errors()
     assert request.errors[0]["parameter"] == "filters"
