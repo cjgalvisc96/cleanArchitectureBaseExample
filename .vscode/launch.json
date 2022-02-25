@@ -31,7 +31,8 @@
             },
             //"envFile": "${workspaceFolder}/.env.test",
             "args": [
-                "tests/use_cases/test_room_list.py::test_room_list_handles_bad_request",
+                "tests/repository/test_memrepo.py::test_repository_list_with_price_less_than_filter",
+                // "tests/use_cases/test_room_list.py::test_room_list_handles_bad_request",
                 //"tests/application_api/test_room.py::test_get_response_failures", 
                 //"tests"
                 "--disable-warnings"
