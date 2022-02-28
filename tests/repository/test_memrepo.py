@@ -1,3 +1,4 @@
+from operator import itemgetter
 from typing import Any, Dict, List
 
 import pytest
@@ -25,41 +26,26 @@ def get_random_room_dicts() -> List[Dict[str, Any]]:
     return random_room_dicts
 
 
-def get_min_and_max_fields_in_room_dicts(
-    *, room_dicts: List[Dict[str, Any]]
-) -> Dict[str, Dict[str, int]]:
-    """return:
-    min_and_max_fields = {
-        "example_field": {
-            "min": 1,
-            "max": 100,
-        }...
-    }
-    """
-    min_and_max_fields = {}
-    fields = room_dicts[0].keys()
-    for field in fields:
-        min_room_by_field = min(random_room_dicts, key=lambda x: x[field])
-        max_room_by_field = max(random_room_dicts, key=lambda x: x[field])
-        min_and_max_fields[field] = {
-            "min": min_room_by_field[field],
-            "max": max_room_by_field[field],
-        }
-    return min_and_max_fields
-
-
-def find_room_in_rooms_by_field_and_field_value(
-    *, rooms: List[Dict], field: str, field_value: Any
-) -> Dict:
-    find_room = next(
-        (room for room in rooms if room[field] == field_value), {}
-    )
-    return find_room
+def get_rooms_ordered_by_field(
+    *, field: str, room_dicts: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
+    rooms_ordered = {}
+    rooms_ordered = sorted(room_dicts, key=itemgetter(field))
+    return rooms_ordered
 
 
 random_room_dicts = get_random_room_dicts()
-min_and_max_fields = get_min_and_max_fields_in_room_dicts(
-    room_dicts=random_room_dicts
+rooms_order_by_size = get_rooms_ordered_by_field(
+    field="size", room_dicts=random_room_dicts
+)
+rooms_order_by_price = get_rooms_ordered_by_field(
+    field="price", room_dicts=random_room_dicts
+)
+rooms_order_by_longitude = get_rooms_ordered_by_field(
+    field="longitude", room_dicts=random_room_dicts
+)
+rooms_order_by_latitude = get_rooms_ordered_by_field(
+    field="latitude", room_dicts=random_room_dicts
 )
 
 
@@ -96,18 +82,61 @@ def test_repository_list_with_price_equals_filter(price):
 @pytest.mark.parametrize(
     argnames="price",
     argvalues=[
-        min_and_max_fields["price"]["min"] + CLEARANCE,
-        str(min_and_max_fields["price"]["min"] + CLEARANCE),
+        rooms_order_by_price[1]["price"] + CLEARANCE,
+        str(rooms_order_by_price[1]["price"] + CLEARANCE),
     ],
 )
 def test_repository_list_with_price_less_than_filter(price):
     repo = MemRepo(data=random_room_dicts)
-    expected_room = find_room_in_rooms_by_field_and_field_value(
-        rooms=random_room_dicts,
-        field="price",
-        field_value=min_and_max_fields["price"]["min"],
-    )
     rooms = repo.list(filters={"price__lt": price})
+
+    excepted_len_of_rooms = 2
+    assert len(rooms) == excepted_len_of_rooms
+
+    excepted_rooms = get_rooms_ordered_by_field(
+        field="price",
+        room_dicts=[room.to_dict() for room in rooms],
+    )
+    for index_room, room in enumerate(
+        rooms_order_by_price[:excepted_len_of_rooms]
+    ):
+        assert room["code"] == excepted_rooms[index_room]["code"]
+        assert room["price"] == int(excepted_rooms[index_room]["price"])
+
+
+@pytest.mark.parametrize(
+    argnames="price",
+    argvalues=[
+        rooms_order_by_price[-2]["price"] - CLEARANCE,
+        str(rooms_order_by_price[-2]["price"] - CLEARANCE),
+    ],
+)
+def test_repository_list_with_price_greater_than_filter(price):
+    repo = MemRepo(data=random_room_dicts)
+    rooms = repo.list(filters={"price__gt": price})
+
+    excepted_len_of_rooms = 2
+    assert len(rooms) == excepted_len_of_rooms
+
+    excepted_rooms = get_rooms_ordered_by_field(
+        field="price",
+        room_dicts=[room.to_dict() for room in rooms],
+    )
+    for index_room, room in enumerate(
+        rooms_order_by_price[-excepted_len_of_rooms:]
+    ):
+        assert room["code"] == excepted_rooms[index_room]["code"]
+        assert room["price"] == int(excepted_rooms[index_room]["price"])
+
+
+def test_repository_list_with_price_between_filter():
+    repo = MemRepo(data=random_room_dicts)
+    less_price = rooms_order_by_price[0]["price"]
+    greater_price = rooms_order_by_price[2]["price"]
+    rooms = repo.list(
+        filters={"price__lt": greater_price, "price__gt": less_price}
+    )
+
     assert len(rooms) == 1
-    assert rooms[0].code == expected_room["code"]
-    assert rooms[0].price == int(expected_room["price"])
+    rooms_order_by_price[1]["code"] == rooms[0].code
+    rooms_order_by_price[1]["price"] == rooms[0].price

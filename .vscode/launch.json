@@ -21,6 +21,16 @@
             "jinja": true
         },
         {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
             "name": "Python: Pytest",
             "type": "python",
             "request": "launch",
@@ -31,7 +41,7 @@
             },
             //"envFile": "${workspaceFolder}/.env.test",
             "args": [
-                "tests/repository/test_memrepo.py::test_repository_list_with_price_less_than_filter",
+                "tests/repository/test_memrepo.py::test_repository_list_with_price_between_filter",
                 // "tests/use_cases/test_room_list.py::test_room_list_handles_bad_request",
                 //"tests/application_api/test_room.py::test_get_response_failures", 
                 //"tests"

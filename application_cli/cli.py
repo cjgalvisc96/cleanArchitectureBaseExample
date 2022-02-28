@@ -1,8 +1,10 @@
 from typing import Dict, List
 
 from faker import Faker
+from flask import request
 
 from rentomatic.repository.memrepo import MemRepo
+from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.use_cases.room_list import room_list_use_case
 
 
@@ -24,6 +26,7 @@ def build_random_rooms() -> List[Dict]:
 rooms = build_random_rooms()
 
 if __name__ == "__main__":
+    request = build_room_list_request(filters=None)
     repo = MemRepo(data=rooms)
-    result = room_list_use_case(repo=repo)
-    print([room.to_dict() for room in result])
+    result = room_list_use_case(repo=repo, request=request)
+    print([room.to_dict() for room in result.value])
