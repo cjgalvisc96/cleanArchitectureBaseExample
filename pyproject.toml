@@ -28,7 +28,7 @@ multi_line_output = 3
 line_length = 79
 
 [tool.black]
-target-version = ['py39']
+target-version = ["py39"]
 include = '\.pyi?$'
 line-length = 79
 
@@ -41,13 +41,19 @@ show_source = true
 # include everything in pyflakes except F401
 pyflakes = ["+*", "-F401"]
 
+[tool.pytest.ini_options]
+minversion = 2.0
+norecursedirs = [".git", ".tox", "requirements*"]
+python_files = ["test*.py"]
+markers = ["integration: integration tests"]
+
 [tool.coverage.run]
-include=['./app/*']
+include=["./app/*"]
 
 [tool.coverage.report]
 show_missing=true
-include=['./app/*']
-sort='-Miss'
+include=["./app/*"]
+sort="-Miss"
 precision=2
 
 [tool.coverage.html]
