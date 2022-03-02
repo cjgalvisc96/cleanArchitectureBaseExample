@@ -42,8 +42,7 @@
             //"envFile": "${workspaceFolder}/.env.test",
             "args": [
                 "-svv",
-                "-m",
-                "integration",
+                "--integration",
                 // "tests/repository/test_memrepo.py::test_repository_list_with_price_between_filter",
                 // "tests/use_cases/test_room_list.py::test_room_list_handles_bad_request",
                 //"tests/application_api/test_room.py::test_get_response_failures", 

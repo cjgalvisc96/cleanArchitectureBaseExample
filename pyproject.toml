@@ -6,6 +6,9 @@ authors = ["Cristian Galvis <cjgalvisc@unal.edu.co>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+Flask = "^2.0.3"
+SQLAlchemy = "^1.4.31"
+psycopg2-binary = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"
@@ -15,9 +18,10 @@ flake8 = "^4.0.1"
 pre-commit = "^2.17.0"
 flakehell = "^0.9.0"
 Faker = "^13.0.0"
-Flask = "^2.0.3"
 pytest-flask = "^1.2.0"
 pytest-cov = "^3.0.0"
+docker-compose = "^1.29.2"
+
 
 [tool.isort]
 use_parentheses = true
