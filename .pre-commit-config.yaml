@@ -39,7 +39,7 @@ repos:
     -   id: pytest-check
         stages: [commit]  
         name: pytest-check
-        entry: pytest tests --disable-warnings
+        entry: python manage.py test -- --integration
         language: system
         pass_filenames: false
         always_run: true

@@ -21,6 +21,7 @@ Faker = "^13.0.0"
 pytest-flask = "^1.2.0"
 pytest-cov = "^3.0.0"
 docker-compose = "^1.29.2"
+coverage = "^6.3.2"
 
 
 [tool.isort]
@@ -52,11 +53,20 @@ python_files = ["test*.py"]
 markers = ["integration: integration tests"]
 
 [tool.coverage.run]
-include=["./app/*"]
+include=[
+    "./application_cli/*",
+    "./application_api/*",
+    "./rentomatic/*",
+]
+disable_warnings=["include-ignored"]
 
 [tool.coverage.report]
 show_missing=true
-include=["./app/*"]
+include=[
+    "./application_cli/*",
+    "./application_api/*",
+    "./rentomatic/*",
+]
 sort="-Miss"
 precision=2
 

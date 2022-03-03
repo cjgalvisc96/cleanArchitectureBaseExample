@@ -31,6 +31,20 @@
             }
         },
         {
+            "name": "Python: Custom Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "test",
+                "--",
+                "--integration"
+            ],
+        },
+        {
             "name": "Python: Pytest",
             "type": "python",
             "request": "launch",
