@@ -9,15 +9,8 @@ from tests.utils.faker_data import faker_data
 
 
 @pytest.fixture(scope="session")
-def pg_session_empty():
-    conn_str = "postgresql+psycopg2://{}:{}@{}:{}/{}".format(
-        settings.POSTGRES_USER,
-        settings.POSTGRES_PASSWORD,
-        settings.POSTGRES_HOST,
-        settings.POSTGRES_PORT,
-        settings.APPLICATION_DB,
-    )
-    engine = sqlalchemy.create_engine(conn_str)
+def postgres_session_empty():
+    engine = sqlalchemy.create_engine(url=settings.POSTGRES_URI)
     connection = engine.connect()
 
     Base.metadata.create_all(engine)
@@ -33,8 +26,8 @@ def pg_session_empty():
 
 
 @pytest.fixture(scope="session")
-def pg_test_data() -> List[Dict[str, Any]]:
-    random_pg_test_data = []
+def postgres_test_data() -> List[Dict[str, Any]]:
+    random_postgres_test_data = []
     for _ in range(5):
         temp_room = dict(
             code=faker_data.uuid4(),
@@ -43,23 +36,23 @@ def pg_test_data() -> List[Dict[str, Any]]:
             longitude=float(faker_data.longitude()),
             latitude=float(faker_data.latitude()),
         )
-        random_pg_test_data.append(temp_room)
-    return random_pg_test_data
+        random_postgres_test_data.append(temp_room)
+    return random_postgres_test_data
 
 
 @pytest.fixture(scope="function")
-def pg_session(pg_session_empty, pg_test_data):
-    for r in pg_test_data:
-        new_room = Room(
-            code=r["code"],
-            size=r["size"],
-            price=r["price"],
-            longitude=r["longitude"],
-            latitude=r["latitude"],
+def postgres_session(postgres_session_empty, postgres_test_data):
+    for room_test in postgres_test_data:
+        temp_room_test = Room(
+            code=room_test["code"],
+            size=room_test["size"],
+            price=room_test["price"],
+            longitude=room_test["longitude"],
+            latitude=room_test["latitude"],
         )
-        pg_session_empty.add(new_room)
-        pg_session_empty.commit()
+        postgres_session_empty.add(temp_room_test)
+        postgres_session_empty.commit()
 
-    yield pg_session_empty
+    yield postgres_session_empty
 
-    pg_session_empty.query(Room).delete()
+    postgres_session_empty.query(Room).delete()

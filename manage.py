@@ -18,7 +18,7 @@ def docker_compose_file() -> None:
     )
 
 
-def docker_compose_cmdline(commands_string=None) -> List[str]:
+def docker_compose_cmdline(*, commands_string=None) -> List[str]:
     compose_file = docker_compose_file()
 
     if not os.path.isfile(compose_file):
@@ -38,7 +38,7 @@ def docker_compose_cmdline(commands_string=None) -> List[str]:
     return command_line
 
 
-def run_sql(statements: List[str]) -> None:
+def run_sql(*, statements: List[str]) -> None:
     conn = psycopg2.connect(
         dbname=settings.POSTGRES_DB,
         user=settings.POSTGRES_USER,
@@ -56,7 +56,7 @@ def run_sql(statements: List[str]) -> None:
     conn.close()
 
 
-def wait_for_logs(cmdline: str, message: str) -> None:
+def wait_for_logs(*, cmdline: str, message: str) -> None:
     logs = subprocess.check_output(cmdline)
     while message not in logs.decode(settings.ENCODING_FORMAT):
         time.sleep(1)
@@ -71,7 +71,7 @@ def cli():
 @cli.command(context_settings={"ignore_unknown_options": True})
 @click.argument("subcommand", nargs=-1, type=click.Path())
 def compose(subcommand: str) -> None:
-    cmdline = docker_compose_cmdline() + list(subcommand)
+    cmdline = docker_compose_cmdline(commands_string=None) + list(subcommand)
 
     try:
         p = subprocess.Popen(cmdline)
@@ -82,9 +82,9 @@ def compose(subcommand: str) -> None:
 
 
 @cli.command()
-def init_postgres() -> None:
+def init_postgres_db() -> None:
     try:
-        run_sql([f"CREATE DATABASE {settings.APPLICATION_DB}"])
+        run_sql(statements=[f"CREATE DATABASE {settings.APPLICATION_DB}"])
     except psycopg2.errors.DuplicateDatabase:
         print(
             (
@@ -97,13 +97,13 @@ def init_postgres() -> None:
 @cli.command()
 @click.argument("args", nargs=-1)
 def test(args: List[str]) -> None:
-    cmdline = docker_compose_cmdline("up -d")
+    cmdline = docker_compose_cmdline(commands_string="up -d")
     subprocess.call(cmdline)
 
-    cmdline = docker_compose_cmdline("logs postgres")
-    wait_for_logs(cmdline, "ready to accept connections")
+    cmdline = docker_compose_cmdline(commands_string="logs postgres")
+    wait_for_logs(cmdline=cmdline, message="ready to accept connections")
 
-    run_sql([f"CREATE DATABASE {settings.APPLICATION_DB}"])
+    run_sql(statements=[f"CREATE DATABASE {settings.APPLICATION_DB}"])
 
     cmdline = [
         "pytest",
@@ -113,7 +113,7 @@ def test(args: List[str]) -> None:
     cmdline.extend(args)
     subprocess.call(cmdline)
 
-    cmdline = docker_compose_cmdline("down")
+    cmdline = docker_compose_cmdline(commands_string="down")
     subprocess.call(cmdline)
 
 
