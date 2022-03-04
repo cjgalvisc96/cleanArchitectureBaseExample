@@ -3,17 +3,17 @@ import urllib
 from unittest import mock
 
 import pytest
-from faker import Faker
 
+from config.config import settings
 from rentomatic.responses import (
     RensponseSuccess,
     ResponseFailure,
     ResponseTypes,
 )
 from tests.application_api.conftest import get_status_codes
+from tests.utils.faker_data import faker_data
 
 STATUS_CODES = get_status_codes()
-faker_data = Faker(locale="en_US")  # TODO: constant
 
 
 @mock.patch("application_api.rest.room.room_list_use_case")
@@ -26,8 +26,9 @@ def test_get_rooms_without_filters(
 
     expected_rooms = [room.to_dict() for room in rooms]
     assert (
-        json.loads(http_response.data.decode("UTF-8")) == expected_rooms
-    )  # TODO: environment var
+        json.loads(http_response.data.decode(settings.ENCODING_FORMAT))
+        == expected_rooms
+    )
 
     mock_list_use_case.assert_called()
     args, kwargs = mock_list_use_case.call_args
@@ -53,8 +54,9 @@ def test_get_rooms_with_filters(mock_list_use_case, get_random_rooms, client):
 
     expected_rooms = [room.to_dict() for room in rooms]
     assert (
-        json.loads(http_response.data.decode("UTF-8")) == expected_rooms
-    )  # TODO: environment var
+        json.loads(http_response.data.decode(settings.ENCODING_FORMAT))
+        == expected_rooms
+    )
 
     mock_list_use_case.assert_called()
     args, kwargs = mock_list_use_case.call_args
@@ -85,9 +87,7 @@ def test_get_response_failures(
     )
     filters = faker_data.word()
     http_response = client.get(f"/rooms?{filters}")
-    response = json.loads(
-        http_response.data.decode("UTF-8")
-    )  # TODO: environment var
+    response = json.loads(http_response.data.decode(settings.ENCODING_FORMAT))
 
     assert response["message"] == expected_error_message
 

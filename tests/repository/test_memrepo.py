@@ -2,12 +2,10 @@ from operator import itemgetter
 from typing import Any, Dict, List
 
 import pytest
-from faker import Faker
 
 from rentomatic.domain.room import Room
 from rentomatic.repository.memrepo import MemRepo
-
-faker_data = Faker(locale="en_US")  # TODO: constant
+from tests.utils.faker_data import faker_data
 
 CLEARANCE = 1
 

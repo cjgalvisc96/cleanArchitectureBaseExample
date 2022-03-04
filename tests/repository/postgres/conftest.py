@@ -2,21 +2,20 @@ from typing import Any, Dict, List
 
 import pytest
 import sqlalchemy
-from faker import Faker
 
+from config.config import settings
 from rentomatic.repository.postgres.postgres_objects import Base, Room
-
-faker_data = Faker(locale="en_US")  # TODO: constant
+from tests.utils.faker_data import faker_data
 
 
 @pytest.fixture(scope="session")
-def pg_session_empty(app_configuration):
+def pg_session_empty():
     conn_str = "postgresql+psycopg2://{}:{}@{}:{}/{}".format(
-        app_configuration["POSTGRES_USER"],
-        app_configuration["POSTGRES_PASSWORD"],
-        app_configuration["POSTGRES_HOSTNAME"],
-        app_configuration["POSTGRES_PORT"],
-        app_configuration["APPLICATION_DB"],
+        settings.POSTGRES_USER,
+        settings.POSTGRES_PASSWORD,
+        settings.POSTGRES_HOST,
+        settings.POSTGRES_PORT,
+        settings.APPLICATION_DB,
     )
     engine = sqlalchemy.create_engine(conn_str)
     connection = engine.connect()

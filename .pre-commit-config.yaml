@@ -34,12 +34,12 @@ repos:
         args: [
             '.'
         ]
--   repo: local
-    hooks:
-    -   id: pytest-check
-        stages: [commit]  
-        name: pytest-check
-        entry: python manage.py test -- --integration
-        language: system
-        pass_filenames: false
-        always_run: true
+# -   repo: local
+#     hooks:
+#     -   id: pytest-check
+#         stages: [commit]  
+#         name: pytest-check
+#         entry: python manage.py test -- --integration
+#         language: system
+#         pass_filenames: false
+#         always_run: true

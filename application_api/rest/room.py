@@ -1,20 +1,20 @@
 import json
 from typing import Dict, Generator, List
 
-from faker import Faker
 from flask import Blueprint, Response, request
 
 from application_api.rest.constants import RESPONSE_STATUS_CODES
+from config.config import settings
 from rentomatic.repository.memrepo import MemRepo
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.serializers.room import RoomJsonEncoder
 from rentomatic.use_cases.room_list import room_list_use_case
+from tests.utils.faker_data import faker_data
 
 blueprint = Blueprint("room", __name__)
 
 
 def build_random_rooms() -> List[Dict]:
-    faker_data = Faker(locale="en_US")  # TODO: constant
     random_rooms = []
     for _ in range(5):
         temp_room = dict(
@@ -42,7 +42,7 @@ def room_list() -> Response:
     response = room_list_use_case(repo=repo, request=request_object)
     return Response(
         response=json.dumps(obj=response.value, cls=RoomJsonEncoder),
-        mimetype="application/json",  # TODO: make env var
+        mimetype=settings.APPLICATION_API_MIMETYPE,
         status=RESPONSE_STATUS_CODES[response.type],
     )
 

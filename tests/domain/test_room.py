@@ -1,8 +1,5 @@
-from faker import Faker
-
 from rentomatic.domain.room import Room
-
-faker_data = Faker(locale="en_US")  # TODO: constant
+from tests.utils.faker_data import faker_data
 
 
 def test_room_model_init():

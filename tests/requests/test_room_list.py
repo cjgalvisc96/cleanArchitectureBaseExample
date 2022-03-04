@@ -1,10 +1,8 @@
 import pytest
-from faker import Faker
 
 from rentomatic.requests.room_list import build_room_list_request
 from tests.requests.conftest import get_filters_names
-
-faker_data = Faker(locale="en_US")  # TODO: constant
+from tests.utils.faker_data import faker_data
 
 
 def test_build_room_list_request_without_parameters():

@@ -1,15 +1,14 @@
 from typing import Dict, List
 
-from faker import Faker
 from flask import request
 
 from rentomatic.repository.memrepo import MemRepo
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.use_cases.room_list import room_list_use_case
+from tests.utils.faker_data import faker_data
 
 
 def build_random_rooms() -> List[Dict]:
-    faker_data = Faker(locale="en_US")  # TODO: constant
     random_rooms = []
     for _ in range(5):
         temp_room = dict(
