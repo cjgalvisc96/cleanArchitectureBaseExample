@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     APPLICATION_API_MIMETYPE: str
     ENCODING_FORMAT: str
 
-    @validator("MONGODB_URI", pre=True)
+    @validator("MONGODB_URI", pre=True) # TODO: make same to postgres
     def assemble_db_connection(
         cls, value: Optional[str], values: Dict[str, Any]
     ) -> Any:
