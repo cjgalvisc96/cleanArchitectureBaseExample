@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     API_V1_PREFIX: str
     APPLICATION_API_MIMETYPE: str
     ENCODING_FORMAT: str
+    NUMBER_OF_RANDOM_TEST_ROOMS: int
 
     @validator("POSTGRES_URI", pre=True)
     def build_postgresdb_uri(

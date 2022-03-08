@@ -1,36 +1,10 @@
-from operator import itemgetter
-from typing import Any, Dict, List
-
 import pytest
 
 from rentomatic.domain.room import Room
 from rentomatic.repository.memrepo import MemRepo
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import get_random_room_dicts, get_rooms_ordered_by_field
 
 CLEARANCE = 1
-
-
-def get_random_room_dicts() -> List[Dict[str, Any]]:
-    random_room_dicts = []
-    for _ in range(5):
-        temp_room = dict(
-            code=faker_data.uuid4(),
-            size=faker_data.random_number(digits=3),
-            price=faker_data.random_number(digits=3),
-            longitude=faker_data.longitude(),
-            latitude=faker_data.latitude(),
-        )
-        random_room_dicts.append(temp_room)
-    return random_room_dicts
-
-
-def get_rooms_ordered_by_field(
-    *, field: str, room_dicts: List[Dict[str, Any]]
-) -> List[Dict[str, Any]]:
-    rooms_ordered = {}
-    rooms_ordered = sorted(room_dicts, key=itemgetter(field))
-    return rooms_ordered
-
 
 random_room_dicts = get_random_room_dicts()
 rooms_order_by_size = get_rooms_ordered_by_field(
@@ -136,5 +110,5 @@ def test_repository_list_with_price_between_filter():
     )
 
     assert len(rooms) == 1
-    rooms_order_by_price[1]["code"] == rooms[0].code
-    rooms_order_by_price[1]["price"] == rooms[0].price
+    assert rooms_order_by_price[1]["code"] == rooms[0].code
+    assert rooms_order_by_price[1]["price"] == rooms[0].price

@@ -4,8 +4,8 @@ import pytest
 import sqlalchemy
 
 from config.config import settings
-from rentomatic.repository.postgres.postgres_objects import Base, Room
-from tests.utils.faker_data import faker_data
+from rentomatic.repository.postgres.postgres_objects import Base, RoomPostgres
+from tests.utils.utils import faker_data
 
 
 @pytest.fixture(scope="session")
@@ -28,7 +28,7 @@ def postgres_session_empty():
 @pytest.fixture(scope="session")
 def postgres_test_data() -> List[Dict[str, Any]]:
     random_postgres_test_data = []
-    for _ in range(5):
+    for _ in range(settings.NUMBER_OF_RANDOM_TEST_ROOMS):
         temp_room = dict(
             code=faker_data.uuid4(),
             size=faker_data.random_number(digits=3),
@@ -43,7 +43,7 @@ def postgres_test_data() -> List[Dict[str, Any]]:
 @pytest.fixture(scope="function")
 def postgres_session(postgres_session_empty, postgres_test_data):
     for room_test in postgres_test_data:
-        temp_room_test = Room(
+        temp_room_test = RoomPostgres(
             code=room_test["code"],
             size=room_test["size"],
             price=room_test["price"],
@@ -55,4 +55,4 @@ def postgres_session(postgres_session_empty, postgres_test_data):
 
     yield postgres_session_empty
 
-    postgres_session_empty.query(Room).delete()
+    postgres_session_empty.query(RoomPostgres).delete()

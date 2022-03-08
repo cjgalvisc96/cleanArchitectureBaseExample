@@ -2,7 +2,7 @@ import pytest
 
 from rentomatic.requests.room_list import build_room_list_request
 from tests.requests.conftest import get_filters_names
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import faker_data
 
 
 def test_build_room_list_request_without_parameters():

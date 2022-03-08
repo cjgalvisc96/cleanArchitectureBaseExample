@@ -1,7 +1,7 @@
 import json
 
 from rentomatic.serializers.room import RoomJsonEncoder
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import faker_data
 
 
 def test_room_model_init():

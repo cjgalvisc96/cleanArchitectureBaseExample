@@ -1,5 +1,5 @@
 from rentomatic.domain.room import Room
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import faker_data
 
 
 def test_room_model_init():

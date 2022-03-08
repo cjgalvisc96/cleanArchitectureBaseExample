@@ -3,7 +3,7 @@ from unittest import mock
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.responses import ResponseTypes
 from rentomatic.use_cases.room_list import room_list_use_case
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import faker_data
 
 
 def test_room_list_without_parameters(get_random_domain_rooms):

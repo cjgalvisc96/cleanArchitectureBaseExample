@@ -11,16 +11,14 @@ from rentomatic.responses import (
     ResponseTypes,
 )
 from tests.application_api.conftest import get_status_codes
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import faker_data, get_random_rooms
 
 STATUS_CODES = get_status_codes()
 
 
 @mock.patch("application_api.rest.room.room_list_use_case")
-def test_get_rooms_without_filters(
-    mock_list_use_case, get_random_rooms, client
-):
-    rooms = get_random_rooms
+def test_get_rooms_without_filters(mock_list_use_case, client):
+    rooms = get_random_rooms()
     mock_list_use_case.return_value = RensponseSuccess(value=rooms)
     http_response = client.get("/rooms")
 
@@ -39,8 +37,8 @@ def test_get_rooms_without_filters(
 
 
 @mock.patch("application_api.rest.room.room_list_use_case")
-def test_get_rooms_with_filters(mock_list_use_case, get_random_rooms, client):
-    rooms = get_random_rooms
+def test_get_rooms_with_filters(mock_list_use_case, client):
+    rooms = get_random_rooms()
     mock_list_use_case.return_value = RensponseSuccess(value=rooms)
     filters = {"price__gt": "2", "price__lt": "6"}
 

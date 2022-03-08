@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Generator, List
+from typing import Dict, Generator
 
 from flask import Blueprint, Response, request
 
@@ -9,26 +9,10 @@ from rentomatic.repository.memrepo import MemRepo
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.serializers.room import RoomJsonEncoder
 from rentomatic.use_cases.room_list import room_list_use_case
-from tests.utils.faker_data import faker_data
+from tests.utils.utils import get_random_room_dicts
 
 blueprint = Blueprint("room", __name__)
-
-
-def build_random_rooms() -> List[Dict]:
-    random_rooms = []
-    for _ in range(5):
-        temp_room = dict(
-            code=faker_data.uuid4(),
-            size=faker_data.random_number(digits=3),
-            price=faker_data.random_number(digits=3),
-            longitude=faker_data.longitude(),
-            latitude=faker_data.latitude(),
-        )
-        random_rooms.append(temp_room)
-    return random_rooms
-
-
-rooms = build_random_rooms()
+rooms = get_random_room_dicts()
 
 
 @blueprint.route("/rooms", methods=["GET"])
