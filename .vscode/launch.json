@@ -31,21 +31,6 @@
             }
         },
         {
-            "name": "Python: Custom Test",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
-            "envFile": "${workspaceFolder}/.env",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            },
-            "args": [
-                "test",
-                "--",
-                "--integration"
-            ],
-        },
-        {
             "name": "Python: Pytest",
             "type": "python",
             "request": "launch",
@@ -64,6 +49,21 @@
                 //"tests"
                 "--disable-warnings"
             ]
-        }
+        },
+        {
+            "name": "Docker: Run Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "runtests",
+                "--",
+                "--integration"
+            ],
+        },
     ]
 }
