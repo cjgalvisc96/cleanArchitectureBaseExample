@@ -17,7 +17,7 @@ def docker_compose_file() -> None:
     )
 
 
-def execute_docker_compose_cmdline(*, commands_string=None) -> List[str]:
+def get_docker_compose_command(*, commands_string=None) -> List[str]:
     compose_file = docker_compose_file()
 
     if not os.path.isfile(compose_file):
@@ -74,12 +74,16 @@ def cli():
 @click.argument("args", nargs=-1)
 def runtests(args: List[str]) -> None:
     def down_docker() -> None:
-        cmdline = execute_docker_compose_cmdline(commands_string="down")
-        subprocess.call(cmdline)
+        docker_compose_command = get_docker_compose_command(
+            commands_string="down"
+        )
+        subprocess.call(docker_compose_command)
 
     def up_docker() -> None:
-        cmdline = execute_docker_compose_cmdline(commands_string="up -d")
-        subprocess.call(cmdline)
+        docker_compose_command = get_docker_compose_command(
+            commands_string="up -d"
+        )
+        subprocess.call(docker_compose_command)
 
     def wait_for_logs(*, cmdline: str, message: str) -> None:
         logs = subprocess.check_output(cmdline)
@@ -88,10 +92,13 @@ def runtests(args: List[str]) -> None:
             logs = subprocess.check_output(cmdline)
 
     def prepare_postgres_container_for_connections() -> None:
-        cmdline = execute_docker_compose_cmdline(
+        docker_compose_command = get_docker_compose_command(
             commands_string="logs postgres"
         )
-        wait_for_logs(cmdline=cmdline, message="ready to accept connections")
+        wait_for_logs(
+            cmdline=docker_compose_command,
+            message="ready to accept connections",
+        )
 
     def create_postgres_db() -> None:
         statement = f"CREATE DATABASE {settings.APPLICATION_DB}"
