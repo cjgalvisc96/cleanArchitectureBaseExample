@@ -1,7 +1,7 @@
 from typing import Tuple
 
 
-class RequestFiltersEnum:
+class RequestFiltersType:
     CODE__EQ = "code__eq"
     PRICE__EQ = "price__eq"
     PRICE__LT = "price__lt"

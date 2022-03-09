@@ -1,4 +1,4 @@
-class FiltersEnum:
+class FiltersType:
     CODE__EQ = "code__eq"
     PRICE__EQ = "price__eq"
     PRICE__LT = "price__lt"

@@ -1,7 +1,7 @@
 from typing import Any, Dict, List
 
 from rentomatic.domain.room import Room
-from rentomatic.repository.constants import FiltersEnum
+from rentomatic.repository.constants import FiltersType
 
 
 class MemRepo:
@@ -15,32 +15,32 @@ class MemRepo:
         if not filters:
             return result
 
-        if FiltersEnum.CODE__EQ in filters:
+        if FiltersType.CODE__EQ in filters:
             result = [
                 room
                 for room in result
-                if room.code == filters[FiltersEnum.CODE__EQ]
+                if room.code == filters[FiltersType.CODE__EQ]
             ]
 
-        if FiltersEnum.PRICE__EQ in filters:
+        if FiltersType.PRICE__EQ in filters:
             result = [
                 room
                 for room in result
-                if room.price == int(filters[FiltersEnum.PRICE__EQ])
+                if room.price == int(filters[FiltersType.PRICE__EQ])
             ]
 
-        if FiltersEnum.PRICE__LT in filters:
+        if FiltersType.PRICE__LT in filters:
             result = [
                 room
                 for room in result
-                if room.price < int(filters[FiltersEnum.PRICE__LT])
+                if room.price < int(filters[FiltersType.PRICE__LT])
             ]
 
-        if FiltersEnum.PRICE__GT in filters:
+        if FiltersType.PRICE__GT in filters:
             result = [
                 room
                 for room in result
-                if room.price > int(filters[FiltersEnum.PRICE__GT])
+                if room.price > int(filters[FiltersType.PRICE__GT])
             ]
 
         return result

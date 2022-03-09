@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from typing import Union
 
-from rentomatic.requests.constants import RequestFiltersEnum
+from rentomatic.requests.constants import RequestFiltersType
 from rentomatic.requests.error_messages import filters_errors
 
 
@@ -41,7 +41,7 @@ def build_room_list_request(
             )
             return invalid_request
 
-        accepted_filters = RequestFiltersEnum.get_request_filters()
+        accepted_filters = RequestFiltersType.get_request_filters()
         for filter_name, _ in filters.items():
             if filter_name not in accepted_filters:
                 invalid_request.add_error(

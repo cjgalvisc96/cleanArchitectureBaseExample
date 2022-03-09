@@ -5,8 +5,6 @@ from rentomatic.domain.room import Room
 from rentomatic.repository.memrepo import MemRepo
 from tests.utils.utils import get_random_room_dicts, get_rooms_ordered_by_field
 
-settings.CLEARANCE_FOR_RANDOM_TEST_ROOMS = 1
-
 random_room_dicts = get_random_room_dicts()
 rooms_order_by_size = get_rooms_ordered_by_field(
     field="size", room_dicts=random_room_dicts
