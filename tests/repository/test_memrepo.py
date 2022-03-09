@@ -1,10 +1,11 @@
 import pytest
 
+from config.config import settings
 from rentomatic.domain.room import Room
 from rentomatic.repository.memrepo import MemRepo
 from tests.utils.utils import get_random_room_dicts, get_rooms_ordered_by_field
 
-CLEARANCE = 1
+settings.CLEARANCE_FOR_RANDOM_TEST_ROOMS = 1
 
 random_room_dicts = get_random_room_dicts()
 rooms_order_by_size = get_rooms_ordered_by_field(
@@ -54,8 +55,12 @@ def test_repository_list_with_price_equals_filter(price):
 @pytest.mark.parametrize(
     argnames="price",
     argvalues=[
-        rooms_order_by_price[1]["price"] + CLEARANCE,
-        str(rooms_order_by_price[1]["price"] + CLEARANCE),
+        rooms_order_by_price[1]["price"]
+        + settings.CLEARANCE_FOR_RANDOM_TEST_ROOMS,
+        str(
+            rooms_order_by_price[1]["price"]
+            + settings.CLEARANCE_FOR_RANDOM_TEST_ROOMS
+        ),
     ],
 )
 def test_repository_list_with_price_less_than_filter(price):
@@ -79,8 +84,12 @@ def test_repository_list_with_price_less_than_filter(price):
 @pytest.mark.parametrize(
     argnames="price",
     argvalues=[
-        rooms_order_by_price[-2]["price"] - CLEARANCE,
-        str(rooms_order_by_price[-2]["price"] - CLEARANCE),
+        rooms_order_by_price[-2]["price"]
+        - settings.CLEARANCE_FOR_RANDOM_TEST_ROOMS,
+        str(
+            rooms_order_by_price[-2]["price"]
+            - settings.CLEARANCE_FOR_RANDOM_TEST_ROOMS
+        ),
     ],
 )
 def test_repository_list_with_price_greater_than_filter(price):

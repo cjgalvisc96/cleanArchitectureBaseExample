@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     POSTGRES_URI: str = None
     MONGODB_USER: str
     MONGODB_HOST: str
-    MONGODB_PORT: str
+    MONGODB_PORT: int
     MONGODB_PASSWORD: str
     MONGODB_URI: str = None
     FAKER_DATA_LOCATE: str
@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     APPLICATION_API_MIMETYPE: str
     ENCODING_FORMAT: str
     NUMBER_OF_RANDOM_TEST_ROOMS: int
+    CLEARANCE_FOR_RANDOM_TEST_ROOMS: int
 
     @validator("POSTGRES_URI", pre=True)
     def build_postgresdb_uri(

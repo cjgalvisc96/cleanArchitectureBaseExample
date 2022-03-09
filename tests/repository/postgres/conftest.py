@@ -5,7 +5,7 @@ import sqlalchemy
 
 from config.config import settings
 from rentomatic.repository.postgres.postgres_objects import Base, RoomPostgres
-from tests.utils.utils import faker_data
+from tests.utils.utils import get_random_room_dicts
 
 
 @pytest.fixture(scope="session")
@@ -27,17 +27,7 @@ def postgres_session_empty():
 
 @pytest.fixture(scope="session")
 def postgres_test_data() -> List[Dict[str, Any]]:
-    random_postgres_test_data = []
-    for _ in range(settings.NUMBER_OF_RANDOM_TEST_ROOMS):
-        temp_room = dict(
-            code=faker_data.uuid4(),
-            size=faker_data.random_number(digits=3),
-            price=faker_data.random_number(digits=3),
-            longitude=float(faker_data.longitude()),
-            latitude=float(faker_data.latitude()),
-        )
-        random_postgres_test_data.append(temp_room)
-    return random_postgres_test_data
+    return get_random_room_dicts()
 
 
 @pytest.fixture(scope="function")

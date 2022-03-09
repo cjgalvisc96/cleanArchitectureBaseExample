@@ -1,28 +1,26 @@
 import pytest
 
 from config.config import settings
-from rentomatic.repository.postgres.postgresrepo import PostgresRepo
+from rentomatic.repository.mongo.mongorepo import MongoRepo
 from tests.utils.utils import get_rooms_ordered_by_field
 
 pytestmark = pytest.mark.integration
 
 
-def test_repository_list_without_parameters(
-    postgres_session, postgres_test_data
-):
-    repo = PostgresRepo()
-    repo_rooms = repo.list()
+def test_repository_list_without_parameters(mongo_session, mongo_test_data):
+    repo = MongoRepo()
+    repo_rooms = repo.list(filters=None)
     assert set([room.code for room in repo_rooms]) == set(
-        [room["code"] for room in postgres_test_data]
+        [room["code"] for room in mongo_test_data]
     )
 
 
 def test_repository_list_with_code_equals_filter(
-    postgres_session, postgres_test_data
+    mongo_session, mongo_test_data
 ):
-    repo = PostgresRepo()
+    repo = MongoRepo()
     index_expected_room = 0
-    excepted_room_code = postgres_test_data[index_expected_room]["code"]
+    excepted_room_code = mongo_test_data[index_expected_room]["code"]
     rooms = repo.list(filters={"code__eq": excepted_room_code})
     excepted_len_of_rooms = 1
     assert len(rooms) == excepted_len_of_rooms
@@ -30,13 +28,13 @@ def test_repository_list_with_code_equals_filter(
 
 
 def test_repository_list_with_price_equals_filter(
-    postgres_session, postgres_test_data
+    mongo_session, mongo_test_data
 ):
-    repo = PostgresRepo()
+    repo = MongoRepo()
     index_expected_room = 0
     prices_to_test = (
-        postgres_test_data[index_expected_room]["price"],
-        str(postgres_test_data[index_expected_room]["price"]),
+        mongo_test_data[index_expected_room]["price"],
+        str(mongo_test_data[index_expected_room]["price"]),
     )
     for price_to_test in prices_to_test:
         rooms = repo.list(filters={"price__eq": price_to_test})
@@ -44,17 +42,17 @@ def test_repository_list_with_price_equals_filter(
         assert len(rooms) == excepted_len_of_rooms
         assert (
             rooms[index_expected_room].code
-            == postgres_test_data[index_expected_room]["code"]
+            == mongo_test_data[index_expected_room]["code"]
         )
         assert rooms[index_expected_room].price == int(price_to_test)
 
 
 def test_repository_list_with_price_less_than_filter(
-    postgres_session, postgres_test_data
+    mongo_session, mongo_test_data
 ):
-    repo = PostgresRepo()
+    repo = MongoRepo()
     rooms_order_by_price = get_rooms_ordered_by_field(
-        field="price", room_dicts=postgres_test_data
+        field="price", room_dicts=mongo_test_data
     )
     index_expected_room = 1
     price_to_test = (
@@ -79,11 +77,11 @@ def test_repository_list_with_price_less_than_filter(
 
 
 def test_repository_list_with_price_greater_than_filter(
-    postgres_session, postgres_test_data
+    mongo_session, mongo_test_data
 ):
-    repo = PostgresRepo()
+    repo = MongoRepo()
     rooms_order_by_price = get_rooms_ordered_by_field(
-        field="price", room_dicts=postgres_test_data
+        field="price", room_dicts=mongo_test_data
     )
     index_expected_room = -2
     price_to_test = (
@@ -108,11 +106,11 @@ def test_repository_list_with_price_greater_than_filter(
 
 
 def test_repository_list_with_price_between_filter(
-    postgres_session, postgres_test_data
+    mongo_session, mongo_test_data
 ):
-    repo = PostgresRepo()
+    repo = MongoRepo()
     rooms_order_by_price = get_rooms_ordered_by_field(
-        field="price", room_dicts=postgres_test_data
+        field="price", room_dicts=mongo_test_data
     )
     index_expected_less_price = 0
     index_expected_greater_price = 2

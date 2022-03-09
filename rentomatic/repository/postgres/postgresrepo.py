@@ -1,24 +1,25 @@
-from typing import Any, Dict, List
+from typing import List
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from rentomatic.domain import room
+from config.config import settings
+from rentomatic.domain.room import Room
 from rentomatic.repository.constants import FiltersEnum
 from rentomatic.repository.postgres.postgres_objects import Base, RoomPostgres
 
 
 class PostgresRepo:
-    def __init__(self, configuration: Dict[str, Any]) -> None:
-        self.engine = create_engine(configuration["POSTGRES_URI"])
+    def __init__(self) -> None:
+        self.engine = create_engine(settings.POSTGRES_URI)
         Base.metadata.create_all(self.engine)
         Base.metadata.bind = self.engine
 
     def _create_room_objects(
         self, *, results: List[RoomPostgres]
-    ) -> List[room.Room]:
+    ) -> List[Room]:
         room_objects = [
-            room.Room(
+            Room(
                 code=result.code,
                 size=result.size,
                 price=result.price,
@@ -29,7 +30,7 @@ class PostgresRepo:
         ]
         return room_objects
 
-    def list(self, *, filters=None) -> List[room.Room]:
+    def list(self, *, filters=None) -> List[Room]:
         DBSession = sessionmaker(bind=self.engine)
         session = DBSession()
         query = session.query(RoomPostgres)
