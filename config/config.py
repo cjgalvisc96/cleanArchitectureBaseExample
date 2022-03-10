@@ -12,22 +12,22 @@ class Settings(BaseSettings):
     FLASK_CONFIG: str
     APPLICATION_DB: str
     POSTGRES_DB: str
-    POSTGRES_HOST: str
+    POSTGRES_HOSTNAME: str
     POSTGRES_PORT: int
     POSTGRES_PASSWORD: str
     POSTGRES_USER: str
-    POSTGRES_URI: str = None
+    POSTGRES_URI: Optional[str]
     MONGODB_USER: str
-    MONGODB_HOST: str
+    MONGODB_HOSTNAME: str
     MONGODB_PORT: int
     MONGODB_PASSWORD: str
-    MONGODB_URI: str = None
-    FAKER_DATA_LOCATE: str
+    MONGODB_URI: Optional[str]
+    FAKER_DATA_LOCATE: Optional[str]
     API_V1_PREFIX: str
     APPLICATION_API_MIMETYPE: str
     ENCODING_FORMAT: str
-    NUMBER_OF_RANDOM_TEST_ROOMS: int
-    CLEARANCE_FOR_RANDOM_TEST_ROOMS: int
+    NUMBER_OF_RANDOM_TEST_ROOMS: Optional[int]
+    CLEARANCE_FOR_RANDOM_TEST_ROOMS: Optional[int]
 
     @validator("POSTGRES_URI", pre=True)
     def build_postgresdb_uri(
@@ -40,7 +40,7 @@ class Settings(BaseSettings):
             f"postgresql+psycopg2://"
             f"{values.get('POSTGRES_USER')}:"
             f"{values.get('POSTGRES_PASSWORD')}@"
-            f"{values.get('POSTGRES_HOST')}:"
+            f"{values.get('POSTGRES_HOSTNAME')}:"
             f"{values.get('POSTGRES_PORT')}/"
             f"{values.get('APPLICATION_DB')}"
         )
@@ -57,7 +57,7 @@ class Settings(BaseSettings):
             f"mongodb://"
             f"{values.get('MONGODB_USER')}:"
             f"{values.get('MONGODB_PASSWORD')}@"
-            f"{values.get('MONGODB_HOST')}:"
+            f"{values.get('MONGODB_HOSTNAME')}:"
             f"{values.get('MONGODB_PORT')}"
         )
         return mongodb_uri

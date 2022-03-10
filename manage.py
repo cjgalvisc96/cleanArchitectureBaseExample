@@ -1,4 +1,5 @@
 import os
+import signal
 import subprocess
 import time
 from typing import List
@@ -43,7 +44,7 @@ def execute_sql_command(*, statements: List[str]) -> None:
             dbname=settings.POSTGRES_DB,
             user=settings.POSTGRES_USER,
             password=settings.POSTGRES_PASSWORD,
-            host=settings.POSTGRES_HOST,
+            host=settings.POSTGRES_HOSTNAME,
             port=settings.POSTGRES_PORT,
         )
         return postgres_connection
@@ -68,6 +69,32 @@ def execute_sql_command(*, statements: List[str]) -> None:
 @click.group()
 def cli():
     pass
+
+
+@cli.command(context_settings={"ignore_unknown_options": True})
+@click.argument("subcommand", nargs=-1, type=click.Path())
+def compose(subcommand):
+    cmdline = get_docker_compose_command() + list(subcommand)
+
+    try:
+        p = subprocess.Popen(cmdline)
+        p.wait()
+    except KeyboardInterrupt:
+        p.send_signal(signal.SIGINT)
+        p.wait()
+
+
+@cli.command()
+def init_postgres():
+    try:
+        execute_sql_command([f"CREATE DATABASE {settings.APPLICATION_DB}"])
+    except psycopg2.errors.DuplicateDatabase:
+        print(
+            (
+                f"The database {settings.APPLICATION_DB} already",
+                "exists and will not be recreated",
+            )
+        )
 
 
 @cli.command()

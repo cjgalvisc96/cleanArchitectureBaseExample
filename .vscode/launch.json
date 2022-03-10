@@ -1,55 +1,6 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Python: Flask",
-            "type": "python",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}",
-                "FLASK_APP": "app.py",
-                "FLASK_ENV": "development"
-            },
-            "args": [
-                "run",
-                "--no-debugger"
-            ],
-            "jinja": true
-        },
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "cwd": "${workspaceFolder}",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            }
-        },
-        {
-            "name": "Python: Pytest",
-            "type": "python",
-            "request": "launch",
-            "module": "pytest",
-            "console": "integratedTerminal",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}",
-            },
-            "envFile": "${workspaceFolder}/.env.test",
-            "args": [
-                "-svv",
-                "--integration",
-                // "tests/repository/test_memrepo.py::test_repository_list_with_price_between_filter",
-                // "tests/use_cases/test_room_list.py::test_room_list_handles_bad_request",
-                //"tests/application_api/test_room.py::test_get_response_failures", 
-                //"tests"
-                "--disable-warnings"
-            ]
-        },
         {
             "name": "Docker: Run Test",
             "type": "python",
@@ -63,6 +14,50 @@
                 "runtests",
                 "--",
                 "--integration"
+            ],
+        },
+        {
+            "name": "Docker: Build Web",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "compose",
+                "build",
+                "web"
+            ],
+        },
+        {
+            "name": "Docker: Run Application",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "compose",
+                "up",
+                // "-d"
+            ],
+        },
+        {
+            "name": "Docker: Down Application",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "compose",
+                "down",
             ],
         },
     ]
