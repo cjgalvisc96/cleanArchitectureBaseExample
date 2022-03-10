@@ -60,5 +60,38 @@
                 "down",
             ],
         },
+        {
+            "name": "Postgres: Init DB",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "init-postgres",
+            ],
+        },
+        {
+            "name": "Postgres: Login DB",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "args": [
+                "compose",
+                "exec",
+                "db",
+                "psql",
+                "-U",
+                "postgres",
+                "-d",
+                "application"
+            ],
+        },
     ]
 }

@@ -17,6 +17,9 @@ config.set_section_option(
 config.set_section_option(
     section, "POSTGRES_HOSTNAME", settings.POSTGRES_HOSTNAME
 )
+config.set_section_option(
+    section, "POSTGRES_PORT", str(settings.POSTGRES_PORT)
+)
 config.set_section_option(section, "APPLICATION_DB", settings.APPLICATION_DB)
 
 # Interpret the config file for Python logging.

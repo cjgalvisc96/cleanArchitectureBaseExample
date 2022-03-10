@@ -4,10 +4,11 @@ from pymongo import MongoClient
 from pymongo.cursor import Cursor
 
 from config.config import settings
+from interfaces.repo import IRepo
 from rentomatic.domain.room import Room
 
 
-class MongoRepo:
+class MongoRepo(IRepo):
     def __init__(self) -> None:
         client = MongoClient(settings.MONGODB_URI)
         self.db = client[settings.APPLICATION_DB]

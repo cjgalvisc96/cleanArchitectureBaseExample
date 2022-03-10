@@ -87,7 +87,9 @@ def compose(subcommand):
 @cli.command()
 def init_postgres():
     try:
-        execute_sql_command([f"CREATE DATABASE {settings.APPLICATION_DB}"])
+        execute_sql_command(
+            statements=[f"CREATE DATABASE {settings.APPLICATION_DB}"]
+        )
     except psycopg2.errors.DuplicateDatabase:
         print(
             (

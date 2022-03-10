@@ -5,7 +5,7 @@ from flask import Blueprint, Response, request
 
 from application_api.rest.constants import RESPONSE_STATUS_CODES
 from config.config import settings
-from rentomatic.repository.memrepo import MemRepo
+from rentomatic.repository.postgres.postgresrepo import PostgresRepo
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.serializers.room import RoomJsonEncoder
 from rentomatic.use_cases.room_list import room_list_use_case
@@ -22,7 +22,12 @@ def room_list() -> Response:
 
     request_object = build_room_list_request(filters=filters)
 
-    repo = MemRepo(data=rooms)
+    """
+        ** CleanArchitecture advantage: switch beetween DB easy **
+            from rentomatic.repository.memrepo import MemRepo
+            repo = MemRepo(data=rooms)
+    """
+    repo = PostgresRepo()
     response = room_list_use_case(repo=repo, request=request_object)
     return Response(
         response=json.dumps(obj=response.value, cls=RoomJsonEncoder),

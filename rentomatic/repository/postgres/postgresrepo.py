@@ -4,12 +4,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from config.config import settings
+from interfaces.repo import IRepo
 from rentomatic.domain.room import Room
 from rentomatic.repository.constants import FiltersType
 from rentomatic.repository.postgres.postgres_objects import Base, RoomPostgres
 
 
-class PostgresRepo:
+class PostgresRepo(IRepo):
     def __init__(self) -> None:
         self.engine = create_engine(settings.POSTGRES_URI)
         Base.metadata.create_all(self.engine)
