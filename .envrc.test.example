@@ -1,10 +1,10 @@
 export PYTHONPATH=$PWD
 # Enviroment
-export ENVIRONMENT="development"
+export ENVIRONMENT="testing"
 export DOCKER_FOLDER="docker"
-export DOCKER_COMPOSE_FILE_NAME="development.yml"
+export DOCKER_COMPOSE_FILE_NAME="testing.yml"
 # API
-export FLASK_ENV="development"
+export FLASK_ENV="production"
 export FLASK_CONFIG="testing"
 export FLASK_PORT=5000
 export FLASK_HOST="127.0.0.1"

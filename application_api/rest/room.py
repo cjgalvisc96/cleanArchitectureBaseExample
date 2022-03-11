@@ -9,10 +9,8 @@ from rentomatic.repository.postgres.postgresrepo import PostgresRepo
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.serializers.room import RoomJsonEncoder
 from rentomatic.use_cases.room_list import room_list_use_case
-from tests.utils.utils import get_random_room_dicts
 
 blueprint = Blueprint("room", __name__)
-rooms = get_random_room_dicts()
 
 
 @blueprint.route("/rooms", methods=["GET"])
@@ -25,6 +23,8 @@ def room_list() -> Response:
     """
         ** CleanArchitecture advantage: switch beetween DB easy **
             from rentomatic.repository.memrepo import MemRepo
+            from tests.utils.utils import get_random_room_dicts
+            rooms = get_random_room_dicts()
             repo = MemRepo(data=rooms)
     """
     repo = PostgresRepo()

@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     DOCKER_COMPOSE_FILE_NAME: str
     FLASK_ENV: str
     FLASK_CONFIG: str
+    FLASK_PORT: int
+    FLASK_HOST: str
     APPLICATION_DB: str
     POSTGRES_DB: str
     POSTGRES_HOSTNAME: str

@@ -2,6 +2,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debugger: Web Docker",
+            "type": "python",
+            "request": "attach",
+            "port": 5678,
+            "host": "127.0.0.1",
+            "pathMappings": [
+                {
+                "localRoot": "${workspaceFolder}",
+                "remoteRoot": "/code"
+                }
+            ]
+        },
+        {
             "name": "Docker: Run Test",
             "type": "python",
             "request": "launch",

@@ -11,7 +11,10 @@ from rentomatic.responses import (
     ResponseTypes,
 )
 from tests.application_api.conftest import get_status_codes
-from tests.utils.utils import faker_data, get_random_rooms
+from tests.utils.utils import (
+    faker_data, 
+    get_random_rooms
+)
 
 STATUS_CODES = get_status_codes()
 

@@ -1,25 +1,27 @@
+from random import random
 from unittest import mock
 
 from rentomatic.requests.room_list import build_room_list_request
 from rentomatic.responses import ResponseTypes
 from rentomatic.use_cases.room_list import room_list_use_case
 from tests.utils.utils import faker_data
+from tests.utils.utils import get_random_rooms
 
-
-def test_room_list_without_parameters(get_random_domain_rooms):
+def test_room_list_without_parameters():
     repo = mock.Mock()
-    repo.list.return_value = get_random_domain_rooms
+    random_dicts = get_random_rooms() 
+    repo.list.return_value = random_dicts 
     request = build_room_list_request(filters=None)
     response = room_list_use_case(repo=repo, request=request)
 
     assert bool(response) is True
     repo.list.asser_called_with(filters=None)
-    assert response.value == get_random_domain_rooms
+    assert response.value == random_dicts 
 
 
-def test_room_list_with_filters(get_random_domain_rooms):
+def test_room_list_with_filters():
     repo = mock.Mock()
-    random_domain_rooms = get_random_domain_rooms
+    random_domain_rooms = get_random_rooms()
     repo.list.return_value = random_domain_rooms
     expected_filters = {"code__eq": random_domain_rooms[0].code}
     request = build_room_list_request(filters=expected_filters)
